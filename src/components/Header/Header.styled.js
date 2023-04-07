@@ -7,10 +7,9 @@ export const SectionHeader = styled.section`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: 'Roboto';
 `;
 
-export const LogoWrapper = styled(NavLink)`
+export const LogoWrapper = styled.div`
   position: relative;
   /* outline: 1px solid black; */
 `;
@@ -41,10 +40,9 @@ export const AuthWrapper = styled.div`
   /* outline: 1px solid red; */
   display: flex;
   align-items: center;
-  color: #52555f;
 `;
 
-export const UserLogo = styled.div`
+export const UserLogo = styled(NavLink)`
   overflow: hidden;
   border-radius: 50%;
   width: 32px;
@@ -54,19 +52,12 @@ export const UserLogo = styled.div`
   align-items: center;
   justify-content: center;
   color: black;
-  cursor: pointer;
 
   &.active {
     color: orange;
   }
 `;
-export const LogOutIcon = styled.div`
-  color: #cbccd0;
-  transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  :hover,
-  :focus {
-    color: #ff751d;
-  }
+export const LogOutIcon = styled.img`
   @media screen and (min-width: 768px) {
     display: none;
   }
@@ -81,7 +72,6 @@ export const LogOutButton = styled.button`
   background-color: transparent;
 
   padding: 0;
-  cursor: pointer;
 
   /* outline: 1px solid black; */
   @media screen and (min-width: 768px) {
@@ -93,14 +83,10 @@ export const LogOutButton = styled.button`
       height: 36px;
       margin-right: 20px;
     }
-    &:hover {
-      color: #ff751d;
-    }
   }
 `;
 
 export const LogOutTitle = styled.p`
-  color: #52555f;
   display: none;
   @media screen and (min-width: 768px) {
     font-size: 12px;
@@ -109,7 +95,7 @@ export const LogOutTitle = styled.p`
     display: inline-block;
     transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
     &:active {
-      color: #ff751d;
+      color: red;
     }
   } ;
 `;

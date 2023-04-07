@@ -8,6 +8,7 @@ export const ReportBalance = styled.form`
   }
   @media screen and (min-width: 768px) {
     display: flex;
+    /* margin-right: auto; */
   }
 `;
 
@@ -114,15 +115,13 @@ export const BalanceButton = styled.button`
   }
 
   &:hover {
-    background-color: #ff751d;
-    color: #ffffff;
+    /* background-color: #cfd1d4; */
+    background-color: #f5f6fb;
+    color: #fff;
     transition: 0.5s linear;
   }
   :disabled {
     color: #ffffff;
-  }
-  &:hover:disabled {
-    background-color: transparent;
   }
 
   @media screen and (min-width: 768px) {
@@ -191,19 +190,5 @@ export const BalanceReportInput = styled.input`
     line-height: 1.17;
     font-weight: bold;
     color: black;
-  }
-`;
-
-export const LoaderWrapper = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 40px;
-  z-index: 99;
-  @media screen and (min-width: 768px) {
-    top: 0px;
-    left: 100px;
-  }
-  @media screen and (min-width: 1280px) {
-    left: 110px;
   }
 `;

@@ -9,12 +9,9 @@ import {
 import moment from 'moment';
 
 export const Summary = ({ sortedTransactions }) => {
+  console.log(sortedTransactions);
   let result = sortedTransactions.reduce((accumulator, current) => {
-    const existing = accumulator.find(
-      item =>
-        item.date.toString().slice(0, 7) === current.date.toString().slice(0, 7)
-    );
-
+    const existing = accumulator.find(item => item.date === current.date);
     if (existing) {
       existing.sum += current.sum;
     } else {
@@ -45,7 +42,7 @@ export const Summary = ({ sortedTransactions }) => {
           {result.map(({ _id, date, sum }) => (
             <Tr key={_id}>
               <Td>{moment(date).format('MMMM')}</Td>
-              <Td>{`${Number(sum).toFixed(2).padStart(5, 0)}`}</Td>
+              <Td>{sum}</Td>
             </Tr>
           ))}
         </tbody>

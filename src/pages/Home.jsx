@@ -16,9 +16,9 @@ export default function Home() {
   // }, [dispatch]);
 
   return (
-    <>
+    <div>
       <Helmet>
-        <title>Kapu$ta</title>
+        <title>Home page</title>
       </Helmet>
       {/* <>This is home page</> */}
       {/* <BalanceWrapper /> */}
@@ -27,6 +27,6 @@ export default function Home() {
         {/* <ExpensesForm /> */}
         {/* <IncomeForm /> */}
       </MainHome>
-    </>
+    </div>
   );
 }

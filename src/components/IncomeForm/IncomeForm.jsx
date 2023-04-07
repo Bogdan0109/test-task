@@ -1,13 +1,9 @@
 import * as Yup from 'yup';
 import moment from 'moment';
-import { nanoid } from 'nanoid';
 import { Formik, ErrorMessage } from 'formik';
 import useScreenResizing from '../../hooks/useScreenResizing';
 import { useDispatch } from 'react-redux';
-import {
-  addTransaction,
-  // getAllTransactions //!
-} from '../../redux/transaction/transactionOperations';
+import { addTransaction } from '../../redux/transaction/transactionOperations';
 import { CustomSelect } from '../CustomSelect/CustomSelect';
 import { DataBox } from '../DataBox/DataBox';
 import { Loader } from '../Loader/Loader';
@@ -31,8 +27,8 @@ import {
 } from '../ExpensesForm/ExpensesForm.styled';
 
 const options = [
-  { key: nanoid(), value: 'Salary', label: 'Salary' },
-  { key: nanoid(), value: 'Add.Income', label: 'Add.Income' },
+  { value: 'Salary', label: 'Salary' },
+  { value: 'Add.Income', label: 'Add.Income' },
 ];
 
 const initialValues = {
@@ -43,7 +39,7 @@ const initialValues = {
 
 const schema = Yup.object().shape({
   category: Yup.string().required('Select category'),
-  description: Yup.string().min(3).max(20).required('Enter income description'),
+  description: Yup.string().min(3).max(16).required('Enter income description'),
   sum: Yup.number('Invalid sum, only numbers')
     .positive('Only positive value')
     .required('Enter sum'),
@@ -81,7 +77,6 @@ const IncomeForm = () => {
               date,
             })
           );
-          // dispatch(getAllTransactions()); //!
           resetForm();
         }}
       >
@@ -95,6 +90,7 @@ const IncomeForm = () => {
           setFieldValue,
           resetForm,
         }) => {
+          // getFormData(values);
           return (
             <FormBox onSubmit={handleSubmit}>
               <FormTopWrapper>
@@ -114,7 +110,6 @@ const IncomeForm = () => {
                     />
                     <CustomSelect
                       name="category"
-                      id="category"
                       options={options}
                       value={values.category}
                       type="Category"

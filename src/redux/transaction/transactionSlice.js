@@ -57,14 +57,14 @@ const transactionsSlice = createSlice({
 
     //!!!
     [getAllTransactions.fulfilled](state, { payload }) {
-      // console.log('getAllTransactions.fulfilled --> payload:', payload); //!
+      console.log('getAllTransactions.fulfilled --> payload:', payload); //!
       state.allTransactions = payload;
       state.isLoading = false;
       state.error = null;
     },
     //!!!
     [addTransaction.fulfilled](state, { payload }) {
-      // console.log('addTransaction.fulfilled --> payload:', payload); //!
+      console.log('addTransaction.fulfilled --> payload:', payload); //!
       // state.transaction = payload; //! Пишет весь объект transaction
       // state.transaction.transactionsType = payload.transactionsType
       // state.transaction.date = payload.date
@@ -72,7 +72,7 @@ const transactionsSlice = createSlice({
       // state.transaction.description = payload.description
       // state.transaction.category = payload.category
       // state.transaction.sum = payload.sum
-      state.allTransactions = [payload.transaction, ...state.allTransactions];
+      state.allTransactions.push(payload.transaction);
       state.isLoading = false;
       state.error = null;
     },
@@ -86,7 +86,7 @@ const transactionsSlice = createSlice({
       // state.items.splice(index, 1);
       //! МОЙ вариант:
       // const newContact = state.items.filter(contact => contact.id !== payload);
-      // console.log('deleteTransaction==>payload:', payload.transactionId); //!
+      console.log('deleteTransaction==>payload:', payload.transactionId); //!
       // state.items = state.items.filter(contact => contact.id !== payload); //??
       state.allTransactions = state.allTransactions.filter(
         transaction => transaction._id !== payload.transactionId
@@ -96,7 +96,7 @@ const transactionsSlice = createSlice({
     },
 
     [getAllTransactionsReport.fulfilled](state, { payload }) {
-      // console.log('getAllTransactionsReport.fulfilled --> payload:', payload); //!
+      console.log('getAllTransactionsReport.fulfilled --> payload:', payload); //!
       state.report = payload;
       state.isLoading = false;
       state.error = null;

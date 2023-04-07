@@ -1,9 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  addTransaction,
-  // getAllTransactions //!
-} from '../../redux/transaction/transactionOperations';
-import { selectBalance } from '../../redux/auth/authSelectors';
+import { useDispatch } from 'react-redux';
+import { addTransaction } from '../../redux/transaction/transactionOperations';
 import * as Yup from 'yup';
 import moment from 'moment';
 import { Formik, ErrorMessage } from 'formik';
@@ -11,7 +7,6 @@ import useScreenResizing from '../../hooks/useScreenResizing';
 import { CustomSelect } from '../CustomSelect/CustomSelect';
 import { DataBox } from '../DataBox/DataBox';
 import { Loader } from '../Loader/Loader';
-import { nanoid } from 'nanoid';
 import {
   InputField,
   FormBox,
@@ -32,21 +27,17 @@ import {
 } from './ExpensesForm.styled';
 
 const options = [
-  { key: nanoid(), value: 'Transport', label: 'Transport' },
-  { key: nanoid(), value: 'Products', label: 'Products' },
-  { key: nanoid(), value: 'Health', label: 'Health' },
-  { key: nanoid(), value: 'Alcohol', label: 'Alcohol' },
-  { key: nanoid(), value: 'Entertainment', label: 'Entertainment' },
-  { key: nanoid(), value: 'Housing', label: 'Housing' },
-  { key: nanoid(), value: 'Technique', label: 'Technique' },
-  {
-    key: nanoid(),
-    value: 'Communal, communication',
-    label: 'Communal, communication',
-  },
-  { key: nanoid(), value: 'Sports, hobbies', label: 'Sports, hobbies' },
-  { key: nanoid(), value: 'Education', label: 'Education' },
-  { key: nanoid(), value: 'Other', label: 'Others' },
+  { value: 'Transport', label: 'Transport' },
+  { value: 'Products', label: 'Products' },
+  { value: 'Health', label: 'Health' },
+  { value: 'Alcohol', label: 'Alcohol' },
+  { value: 'Entertainment', label: 'Entertainment' },
+  { value: 'Housing', label: 'Housing' },
+  { value: 'Technique', label: 'Technique' },
+  { value: 'Communal, communication', label: 'Communal, communication' },
+  { value: 'Sports, hobbies', label: 'Sports, hobbies' },
+  { value: 'Education', label: 'Education' },
+  { value: 'Other', label: 'Others' },
 ];
 
 const initialValues = {
@@ -54,6 +45,17 @@ const initialValues = {
   description: '',
   sum: '',
 };
+
+const schema = Yup.object().shape({
+  category: Yup.string().required('Select category'),
+  description: Yup.string()
+    .min(3)
+    .max(16)
+    .required('Enter product description'),
+  sum: Yup.number('Invalid sum, only numbers')
+    .positive('Only positive value')
+    .required('Enter sum'),
+});
 
 const FormError = ({ name }) => {
   return (
@@ -67,20 +69,8 @@ const FormError = ({ name }) => {
 const ExpensesForm = () => {
   const viewPort = useScreenResizing();
   const dispatch = useDispatch();
-  const currentBalance = useSelector(selectBalance);
-  const date = moment().format('DD.MM.YYYY');
 
-  const schema = Yup.object().shape({
-    category: Yup.string().required('Select category'),
-    description: Yup.string()
-      .min(3)
-      .max(20)
-      .required('Enter product description'),
-    sum: Yup.number('Invalid sum, only numbers')
-      .positive('Only positive value')
-      .max(currentBalance, "Expenses can't exceed your current balance")
-      .required('Enter sum'),
-  });
+  const date = moment().format('DD.MM.YYYY');
 
   // const getFormData = values => {
   //   console.log('getFormData::', values);
@@ -99,7 +89,6 @@ const ExpensesForm = () => {
               date,
             })
           );
-          // dispatch(getAllTransactions()); //!
           resetForm();
         }}
       >
@@ -131,7 +120,6 @@ const ExpensesForm = () => {
                       value={values.description}
                     />
                     <CustomSelect
-                      id="category"
                       name="category"
                       options={options}
                       value={values.category}

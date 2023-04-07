@@ -43,20 +43,14 @@ const authSlice = createSlice({
       state.error = null;
     },
     [register.fulfilled](state, { payload }) {
-<<<<<<< Updated upstream
-      state.user = payload.newUser;
-      state.token = payload.token; //? НЕ НАДО для Kapu$ta:
-      // state.token = null; //? for Kapu$ta
-=======
       console.log('payload', payload);
       // state.user = payload.newUser;
       state.email = payload.email;
       state.id = payload.id;
       state.token = payload.token;
       // state.token = payload.token; //? НЕ НАДО для Kapu$ta:
->>>>>>> Stashed changes
-      // state.isLoggedIn = true; //? НЕ НАДО для Kapu$ta:
-      state.isLoggedIn = true; //? for Kapu$ta
+      state.isLoggedIn = true; //? НЕ НАДО для Kapu$ta:
+      // state.isLoggedIn = false; //? for Kapu$ta
       state.isRegistrIn = true; //? for Kapu$ta
       state.isRefreshing = false;
       state.error = null;
@@ -150,7 +144,7 @@ const authSlice = createSlice({
       state.error = null;
     },
     [changeAvatar.fulfilled](state, { payload }) {
-      // console.log('changeAvatar.fulfilled --> payload:', payload); //!
+      console.log('changeAvatar.fulfilled --> payload:', payload); //!
       state.user.avatarURL = payload;
       // state.token = payload.token;
       state.isLoggedIn = true;
@@ -172,7 +166,7 @@ const authSlice = createSlice({
       state.error = null;
     },
     [getBalance.fulfilled](state, { payload }) {
-      // console.log('getBalance.fulfilled --> payload:', payload); //!
+      console.log('getBalance.fulfilled --> payload:', payload); //!
       state.balance = payload.balance;
       state.isNotNewUser = payload.isNotNewUser;
       state.isRefreshing = false;
@@ -192,7 +186,7 @@ const authSlice = createSlice({
       state.error = null;
     },
     [updateBalance.fulfilled](state, { payload }) {
-      // console.log('updateBalance.fulfilled --> payload:', payload); //!
+      console.log('updateBalance.fulfilled --> payload:', payload); //!
       state.balance = payload;
       // state.isLoggedIn = true;
       // state.isRegistrIn = true; //? for Kapu$ta
@@ -212,7 +206,7 @@ const authSlice = createSlice({
       state.error = null;
     },
     [changeIsNotNewUser.fulfilled](state, { payload }) {
-      // console.log('changeIsNotNewUser.fulfilled --> payload:', payload); //!
+      console.log('changeIsNotNewUser.fulfilled --> payload:', payload); //!
       state.isNotNewUser = payload;
       // state.isLoggedIn = true;
       // state.isRegistrIn = true; //? for Kapu$ta

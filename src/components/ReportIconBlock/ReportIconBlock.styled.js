@@ -9,23 +9,20 @@ export const Container = styled.div`
   margin: auto;
   @media screen and (min-width: 320px) {
     max-width: 480px;
-    margin-bottom: 1px;
+    margin-bottom: 31px;
   }
   @media screen and (min-width: 768px) {
     max-width: 768px;
-    margin-bottom: 31px;
+    margin-bottom: 32px;
   }
 
   @media screen and (min-width: 1280px) {
-    max-width: 1034px;
+    max-width: 1280px;
     margin-bottom: 40px;
-    padding-left: 0px;
-    padding-right: 0px;
   }
 `;
 
 export const ReportWrapper = styled.div`
-  margin-top: 32px;
   @media screen and (min-width: 320px) {
     display: flex;
     text-align: center;
@@ -40,13 +37,11 @@ export const ReportWrapper = styled.div`
     background: #ffffff;
     box-shadow: 0px 10px 60px rgba(170, 178, 197, 0.2);
     border-radius: 30px;
-    padding-top: 20px;
-    max-width: 704px;
+    padding: 20px;
   }
   @media screen and (min-width: 1280px) {
-    max-width: 1034px;
-    padding-left: 175px;
-    padding-right: 175px;
+    padding-left: 37px;
+    padding-right: 37px;
   }
 `;
 export const TransactionWrapper = styled.div`
@@ -66,17 +61,17 @@ export const TransactionWrapper = styled.div`
     text-align: center;
   }
 `;
-
-export const ArrowСhangeMonthButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  border: none;
-  outline: none;
+export const ArrowСhangeMonth = styled.svg`
+  color: #ff751d;
   cursor: pointer;
-`;
+  stroke-width: 3px;
+width: 4px;
+height:10px;
+viewBox: 0 0 7 12;
+fill:none;
+xmlns: http://www.w3.org/2000/svg;
 
+`;
 export const ReportTitle = styled.h1`
   @media screen and (min-width: 320px) {
     font-weight: bold;
@@ -106,7 +101,6 @@ export const ReportList = styled.ul`
   }
 `;
 export const ReportCard = styled.li`
-  color: #52555f;
   @media screen and (min-width: 320px) {
     text-align: center;
     height: 135px;
@@ -142,16 +136,6 @@ export const IconSvg = styled.svg`
     max-height: 56px;
     margin-top: 5px;
     margin-bottom: 5px;
-    fill: #071f41;
-    background-image: radial-gradient(
-      75% 60% at 50% 50%,
-      #f5f6fb 15%,
-      #f5f6fb 15%,
-      #f5f6fb 40%,
-      #f5f6fb 40%,
-      #f5f6fb 65%,
-      #fff 65%
-    );
 
     &:hover {
       fill: #ff751d;
@@ -195,8 +179,4 @@ export const ReportCardTitle = styled.p`
     line-height: 14px;
     padding-top: 10px;
   }
-`;
-export const Notificate = styled.p`
-  margin: 20px;
-  font-size: 20px;
 `;

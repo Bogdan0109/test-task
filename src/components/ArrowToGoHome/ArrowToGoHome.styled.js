@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 export const GoHomeBox = styled.div`
   position: absolute;
   top: 16px;
-  left: -70px;
+  left: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -36,15 +36,11 @@ export const StyledLink = styled(NavLink)`
   }
 `;
 
-//Nataliia changed:
-export const Arrow = styled.svg.attrs({
-  version: '1.1',
-  xmlns: 'http://www.w3.org/2000/svg',
-  xmlnsXlink: 'http://www.w3.org/1999/xlink',
-})`
+export const Arrow = styled.svg`
   width: 18px;
   height: 12px;
   fill: none;
+  xmlns: 'http://www.w3.org/2000/svg';
 `;
 
 export const Title = styled.p`

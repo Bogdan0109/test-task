@@ -1,5 +1,9 @@
 import styled from 'styled-components';
-// import { NavLink } from 'react-router-dom';
+// &:hover,
+// &:focus {
+//   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.12),
+//     0px 4px 10px rgba(0, 0, 0, 0.06), 1px 4px 6px rgba(0, 0, 0, 0.16);
+// }
 import { ReactComponent as Calculator } from '../../images/Calculator.svg';
 import { Field, Form } from 'formik';
 
@@ -119,9 +123,11 @@ export const SecondaryInputWrapper = styled.div`
   margin-bottom: 80px;
   @media screen and (min-width: 768px) {
     margin-bottom: 0px;
+    /* width: 110px; */
     border: none;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
+    border-left: 2px solid #f5f6fb;
   }
 `;
 

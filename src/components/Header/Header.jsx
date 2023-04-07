@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 import { SectionHeader } from './Header.styled';
 // Icon for header
 import Rectangle19 from '../../images/Rectangle19.svg';
 import Rectangle20 from '../../images/Rectangle20.svg';
 import Union from '../../images/Union.svg';
-import { ReactComponent as Logout } from '../../images/logout.svg';
+import Logout from '../../images/logout.svg';
 import DefaultAvatar from '../../images/defaultAvatar.svg';
 
 import { LogoWrapper } from './Header.styled';
@@ -25,17 +26,14 @@ import { useState } from 'react';
 
 import { selectUser } from 'redux/auth/authSelectors';
 
-import { ModaldAvatarPage } from 'components/ModalAvatar/ModalAvatar';
-
 // Mikhaylo Pobochikh
 const modalQuestion = 'Do you really want to leave?';
 
 export const Header = ({ isLoggedIn }) => {
   const [showModal, setShowModal] = useState(false);
-  const [showAvatarModal, setShowAvatarModal] = useState(false);
   const user = useSelector(selectUser);
 
-  // console.log(isLoggedIn);
+  console.log(isLoggedIn);
   const dispatch = useDispatch();
   const onHandleClick = () => {
     dispatch(logOut());
@@ -44,27 +42,22 @@ export const Header = ({ isLoggedIn }) => {
   return (
     <header>
       <SectionHeader>
-        <LogoWrapper to="/home" end>
+        <LogoWrapper>
           <Logo src={Rectangle19} alt="Logo" />
           <Logo2 src={Rectangle20} alt="Logo" />
           <LogoTitle src={Union} alt="Logo" />
         </LogoWrapper>
         {isLoggedIn && (
           <AuthWrapper>
-            <UserLogo onClick={() => setShowAvatarModal(true)}>
+            <UserLogo to="/avatar">
               <img src={user?.avatarURL ?? DefaultAvatar} alt="" width="32" />
             </UserLogo>
             <UserTite>{user?.email ?? 'User Name'}</UserTite>
             <LogOutButton type="button" onClick={() => setShowModal(true)}>
-              <LogOutIcon>
-                <Logout />
-              </LogOutIcon>
+              <LogOutIcon src={Logout} alt="Logout icon" />
               <LogOutTitle>Exit</LogOutTitle>
             </LogOutButton>
           </AuthWrapper>
-        )}
-        {showAvatarModal && (
-          <ModaldAvatarPage closeModal={setShowAvatarModal} />
         )}
         {showModal && (
           <UniversalModal
@@ -73,7 +66,6 @@ export const Header = ({ isLoggedIn }) => {
             question={modalQuestion}
           />
         )}
-        {/* <ModaldAvatarPage /> */}
       </SectionHeader>
     </header>
   );

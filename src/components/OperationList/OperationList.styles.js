@@ -1,29 +1,18 @@
 import styled from 'styled-components';
 
 export const List = styled.ul`
-  height: calc(100vh - 370px);
-  overflow-y: scroll;
-  ::-webkit-scrollbar {
-    width: 6px; /* ширина для вертикального скролла */
-    background-color: transparent;
-  }
-
-  /* ползунок скроллбара */
-  ::-webkit-scrollbar-thumb {
-    background-color: #ff751d;
-    width: 6px;
-    border-radius: 9em;
+  @media screen and (min-width: 768px) {
+    display: none;
   }
 `;
 
 export const OperationListWrapper = styled.li`
   width: 100%;
-  height: 46px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-left: 20px;
-  padding-right: 20px;
+  padding-right: 40px;
   padding-top: 8px;
   padding-bottom: 8px;
   border-bottom: 1px solid #f5f6fb;
@@ -53,14 +42,13 @@ export const OperationListTitle = styled.p`
 export const OperationListDateTitle = styled.p`
   margin: 0;
   padding: 0;
-  font-size: 8px;
+  font-size: 12px;
   color: #52555f;
 `;
 
 export const OperationListDivDate = styled.div`
   display: flex;
-  justify-content: flex-start;
-  gap: 20px;
+  justify-content: space-between;
   width: 100%;
   /* outline: 1px solid black; */
 `;
@@ -93,26 +81,6 @@ export const DeleteBtn = styled.button`
   align-items: center;
   justify-content: center;
   background-color: transparent;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  cursor: pointer;
-  :hover,
-  :focus {
-    background-color: #f5f6fb;
-  }
-`;
-
-export const LoaderWrapper = styled.div`
-  @media screen and (max-width: 767px) {
-    display: none;
-  }
-  width: 624px;
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  @media screen and (min-width: 1280px) {
-    width: 746px;
-  }
+  fill: red;
+  color: red;
 `;

@@ -1,10 +1,11 @@
-import useScreenResizing from '../../hooks/useScreenResizing';
 import { useLocation } from 'react-router-dom';
+import useScreenResizing from '../../hooks/useScreenResizing';
 import { MainWrapper } from '../MainWrapper/MainWrapper';
 import { BottomBtnWrapper } from '../BottomBtnWrapper/BottomBtnWrapper';
 import { TopBtnList } from '../TopBtnList/TopBtnList';
 import { BalanceWrapper } from '../BalanceWrapper/BalanceWrapper';
 import { BackspaceBtn } from '../BackspaceBtn/BackspaceBtn';
+import { useState } from 'react';
 import { DataBox } from '../DataBox/DataBox';
 import {
   BCGLogoBox,
@@ -20,35 +21,22 @@ import {
   MainContentWrapper,
   BigFilterWrapper,
   LoaderWrapper,
-  LoaderWrapperBig,
 } from './MainHome.styled';
 import { OperationList } from 'components/OperationList/OperationList';
-import { Table } from 'components/Table/Table';
-import { TableStyle } from '../Table/Table.styled';
 import { Summary } from 'components/Summary/Sumarry';
 import { useDispatch, useSelector } from 'react-redux';
-<<<<<<< Updated upstream
-import { getAllTransactions } from 'redux/transaction/transactionOperations';
-import {
-  useEffect,
-  // useState
-} from 'react';
-=======
 import { getAllTransactions } from '../../redux/transaction/transactionOperations';
 import { useEffect } from 'react';
->>>>>>> Stashed changes
 import {
   selectAllTransactions,
   selectLoadingTransactions,
 } from 'redux/transaction/transactionSelectors';
-import { showTransactions } from 'redux/transactionsToShow/transactionsToShowSlice';
 import { Loader } from 'components/Loader/Loader';
 
 export const MainHome = ({ children }) => {
   const isLoading = useSelector(selectLoadingTransactions);
-  const { isOpen } = useSelector(store => store.transactionsToShow);
   const viewPort = useScreenResizing();
-  // const [isTransactionsShown, setIsTransactionsShown] = useState(false);
+  const [isTransactionsShown, setIsTransactionsShown] = useState(false);
   const location = useLocation();
   const dispatch = useDispatch();
   const dataFromBack = useSelector(selectAllTransactions);
@@ -57,11 +45,10 @@ export const MainHome = ({ children }) => {
     dispatch(getAllTransactions());
   }, [dispatch]);
 
-  // console.log('dataFromBack:', dataFromBack);
+  console.log('dataFromBack:', dataFromBack);
 
   const handleClick = () => {
-    // setIsTransactionsShown(isTransactionsShown => !isTransactionsShown);
-    dispatch(showTransactions());
+    setIsTransactionsShown(!isTransactionsShown);
   };
 
   const sortedTransactions =
@@ -72,14 +59,14 @@ export const MainHome = ({ children }) => {
       : dataFromBack.filter(
           ({ transactionsType }) => transactionsType === 'income'
         );
-  // console.log('sortedTransactions:', sortedTransactions);
+  console.log('sortedTransactions:', sortedTransactions);
 
   return (
     <MainWrapper>
       <TopWrapper />
       <BCGLogoBox />
       <ContentContainer>
-        {viewPort.width < 768 && !isOpen && (
+        {!isTransactionsShown && viewPort.width < 768 && (
           <>
             <BackspaceWrapper>
               <BackspaceBtn handleClick={handleClick} title="to transactions" />
@@ -103,7 +90,7 @@ export const MainHome = ({ children }) => {
             </BottomBtnBox>
           </>
         )}
-        {viewPort.width < 768 && isOpen && (
+        {isTransactionsShown && viewPort.width < 768 && (
           <>
             <FilterWrapper>
               <BackspaceWrapper>
@@ -121,7 +108,7 @@ export const MainHome = ({ children }) => {
             <ContentBalanceContainer>
               <BalanceWrapper />
             </ContentBalanceContainer>
-            {/* 768-1279 */}
+            {/* 767-1279 */}
             <BottomContentWrapper>
               <ContentBox>
                 <FilterWrapper>
@@ -129,15 +116,10 @@ export const MainHome = ({ children }) => {
                     <TopBtnList />
                   </BtnTopWrapper>
                   {children}
-                  {isLoading ? (
-                    <LoaderWrapperBig>
-                      <Loader />
-                    </LoaderWrapperBig>
-                  ) : (
-                    <TableStyle TableStyle>
-                      <Table data={sortedTransactions} />
-                    </TableStyle>
-                  )}
+                  <OperationList
+                    isLoading={isLoading}
+                    sortedTransactions={sortedTransactions}
+                  />
                 </FilterWrapper>
                 <Summary sortedTransactions={sortedTransactions} />
               </ContentBox>
@@ -149,15 +131,10 @@ export const MainHome = ({ children }) => {
               </BtnTopWrapper>
               {children}
               <MainContentWrapper>
-                {isLoading ? (
-                  <LoaderWrapperBig>
-                    <Loader />
-                  </LoaderWrapperBig>
-                ) : (
-                  <TableStyle TableStyle>
-                    <Table data={sortedTransactions} />
-                  </TableStyle>
-                )}
+                <OperationList
+                  isLoading={isLoading}
+                  sortedTransactions={sortedTransactions}
+                />
                 <Summary sortedTransactions={sortedTransactions} />
               </MainContentWrapper>
             </BigFilterWrapper>

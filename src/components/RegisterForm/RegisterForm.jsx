@@ -1,6 +1,7 @@
-import { Formik, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -13,22 +14,17 @@ import {
   RegisterButton,
   Span,
   Block,
-  SpanEmailPassword,
-  Forma,
 } from './RegisterForm.styled';
 import { ReactComponent as GoogleSvg } from 'images/google.svg';
 
 import { useDispatch } from 'react-redux';
 
-<<<<<<< Updated upstream
-import { logIn, register } from 'redux/auth/authOperations';
-=======
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../../firebase';
 
 import { register } from 'redux/auth/authOperations';
->>>>>>> Stashed changes
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const schema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Enter your email'),
@@ -44,42 +40,54 @@ const FormError = ({ name }) => {
   );
 };
 
-// console.log('RegisterForm ---> start'); //!
+console.log('RegisterForm ---> start'); //!
 
 export const RegisterForm = () => {
-  const dispatch = useDispatch();
-<<<<<<< Updated upstream
-  const urlParams = new URLSearchParams(window.location.search);
-  const email = urlParams.get('email');
-  const password = urlParams.get('password');
-  useEffect(() => {
-    if (email) {
-      dispatch(logIn({ email, password }));
-    }
-  }, [dispatch, email, password]);
-  const handleSubmit = (value, { resetForm }) => {
-    // console.log('RegisterForm ---> handleSubmit'); //!
-    // console.log('RegisterForm ---> value:', value); //!
-    dispatch(register(value));
-    resetForm();
+  const navigate = useNavigate(); ///для возможности переходить по ссылке при нажатии на кнопку типа баттон
+  const handleClick = () => {
+    console.log('isdhfuiwfiewyr9y293r9ewr9ew', 'isdhfuiwfiewyr9y293r9ewr9ew');
+    navigate('/register'); //// у цьому місці треба прописати шлях до бекенду.нижче розшифрувала
+    signInWithPopup(auth, provider).then(({ user }) => {
+      console.log(
+        '🚀 ~ file: RegisterForm.jsx:51 ~ signInWithPopup ~ user:',
+        user
+      );
+      dispatch(
+        register({ email: user.email, id: user.uid, token: user.accessToken })
+      );
+    });
   };
 
-  // console.log('RegisterForm ---> render'); //!
-=======
+  const dispatch = useDispatch();
   // const [errorSymbol, setErrorSymbol] = useState('*');
 
   const handleSubmit = ({ email, password }, { resetForm }) => {
     navigate('/register'); //// у цьому місці треба прописати шлях до бекенду.нижче розшифрувала
     ///('   ')---'доменне ім'я серверу/шлях до ресурсу на сервері де відбувається аутентифікація/додатковий шлях де аутентифікація відбувається через google'
 
-    const auth = getAuth();
+    // const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         dispatch(
           register({ email: user.email, id: user.uid, token: user.accessToken })
         );
       })
-      .catch(console.error);
+      .catch(error => {
+        console.log('error.message', error.message);
+        if (error.message === 'Firebase: Error (auth/email-already-in-use).') {
+          toast.error(`Email ${email} in use`, {
+            position: 'top-center',
+            autoClose: 2000,
+          });
+        }
+
+        if (error.message === 'Firebase: Error (auth/invalid-email).') {
+          toast.error(`User creation error`, {
+            position: 'top-center',
+            autoClose: 2000,
+          });
+        }
+      });
 
     console.log('RegisterForm ---> handleSubmit'); //!
     // console.log('RegisterForm ---> value:', value); //!
@@ -87,12 +95,11 @@ export const RegisterForm = () => {
     resetForm();
   };
 
->>>>>>> Stashed changes
   return (
     <Container>
       <P>You can log in with your Google Account:</P>
 
-      <ButtonGoogl href="https://easy-start-wallet-back.onrender.com/api/users/google">
+      <ButtonGoogl type="button" onClick={handleClick}>
         <GoogleSvg />
       </ButtonGoogl>
 
@@ -103,10 +110,9 @@ export const RegisterForm = () => {
         onSubmit={handleSubmit}
       >
         {({ errors, touched }) => (
-          <Forma autoComplete="off">
+          <Form autoComplete="off">
             <label htmlFor="login" style={{ position: 'relative' }}>
-              {errors.email && touched.email ? <Span>*</Span> : null}{' '}
-              <SpanEmailPassword>Email:</SpanEmailPassword>
+              {errors.email && touched.email ? <Span>*</Span> : null} Email:
               <Block>
                 <Input type="email" name="email" placeholder="Email address" />
                 <FormError name="email" component="div" />
@@ -116,7 +122,7 @@ export const RegisterForm = () => {
             <Block>
               <label htmlFor="password">
                 {errors.password && touched.password ? <Span>*</Span> : null}{' '}
-                <SpanEmailPassword>Password:</SpanEmailPassword>
+                Password:
                 <Input
                   type="password"
                   name="password"
@@ -134,7 +140,7 @@ export const RegisterForm = () => {
               </Link>
               <RegisterButton type="submit">REGISTRATION</RegisterButton>
             </Div>
-          </Forma>
+          </Form>
         )}
       </Formik>
     </Container>

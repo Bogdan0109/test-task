@@ -1,48 +1,56 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTransactionsReport } from 'redux/transaction/transactionSelectors';
-import { ReportCharts } from 'components/ReportCharts/ReportCharts';
-import sprite from '../../images/icon.svg';
 
+import sprite from '../../images/icon.svg';
+// import expenseIconCategories from './data/expenseIcon.json';
+// import incomeIconCategories from './data/incomeIcon.json';
 import { nanoid } from 'nanoid/non-secure';
 import {
   Container,
   ReportWrapper,
   TransactionWrapper,
-  ArrowСhangeMonthButton,
+  ArrowСhangeMonth,
   ReportList,
   ReportTitle,
   ReportCard,
   IconSvg,
   ReportCardTitle,
-  Notificate,
 } from './ReportIconBlock.styled';
-import { ReactComponent as LeftArrowIcon } from '../../images/date-period-left-arrow.svg';
-import { ReactComponent as RightArrowIcon } from '../../images/date-period-right-arrow.svg';
 
 export const ReportIconBlock = () => {
+  // eslint-disable-next-line no-unused-vars
   const [category, setCategory] = useState('');
   const [type, setType] = useState('expenses');
   const report = useSelector(selectAllTransactionsReport);
   const transaction = report.filterTransactions;
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [defaultIndex, setDefaultIndex] = useState(0);
-  let typeDataForCarts = [];
+  // const { category, date, description, sum, transactionsType, _id } =
+  //   transaction;
+
+  // const categories =
+  //   type === 'expenses' ? expenseIconCategories : incomeIconCategories;
+
+  const getCategory = e => {
+    setCategory(e.target.attributes.title.nodeValue);
+  };
 
   const getTransactionByType = type => {
     if (transaction) {
       const filteredByType = transaction.filter(
         transaction => transaction.transactionsType === type
       );
+      // console.log('filteredByType', filteredByType);
       return filteredByType;
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
+  // const categoryLabel = categories.map(el => el.label);
+
   const filterObjByTypeAndCategory = () => {
-    const filteredTransactions = getTransactionByType(type);
-    if (!filteredTransactions) return;
-    typeDataForCarts = filteredTransactions;
-    const result = filteredTransactions.reduce((acc, obj) => {
+    if (!getTransactionByType(type)) return;
+
+    const result = getTransactionByType(type).reduce((acc, obj) => {
       if (!acc[obj.category]) {
         acc[obj.category] = { category: obj.category, sum: 0 };
       }
@@ -53,21 +61,15 @@ export const ReportIconBlock = () => {
     return Object.values(result).sort((a, b) => b.sum - a.sum);
   };
 
-  useEffect(() => {
-    if (getTransactionByType(type) || filterObjByTypeAndCategory()) {
-      const categoryFirstEl = filterObjByTypeAndCategory()
-        .map(element => element.category)
-        .splice(0, 1);
-      setCategory(categoryFirstEl[0]);
-      setDefaultIndex(0);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transaction, type]);
+  // const arrays = filterObjByTypeAndCategory();
 
-  const getCategory = e => {
-    setCategory(e.target.attributes.title.nodeValue);
-    setDefaultIndex(hoveredIndex);
-  };
+  // const findTotalSumByCategory = (type, categoryLabel) => {
+  //   let totalExpense = 0;
+  //   getTransactionByType(type)
+  //     .filter(tr => tr.category === categoryLabel)
+  //     .map(el => (totalExpense += el.sum));
+  //   return totalExpense;
+  // };
 
   const onHandleChangeType = () => {
     if (type === 'expenses') {
@@ -80,76 +82,75 @@ export const ReportIconBlock = () => {
     }
   };
 
-  const handleHover = index => {
-    setHoveredIndex(index);
-  };
+  //   const SortTrBySum = (type, categoryLabel) => {
+  //     return getTransactionByType(type)
+  //       .filter(tr => tr.category === categoryLabel)
+  //       .sort((first, second) => second.sum - first.sum);
+  //   };
 
-  const handleLeave = () => {
-    setHoveredIndex(null);
-  };
-
+  //   console.log('SortTrBySum', SortTrBySum());
+  //   //   const label = categories.map(cat => cat.label);
+  //   const id = categories.map(cat => cat.id);
   return (
-    <>
-      <Container>
-        <ReportWrapper>
-          <TransactionWrapper>
-            <ArrowСhangeMonthButton type="button" onClick={onHandleChangeType}>
-              <LeftArrowIcon />
-            </ArrowСhangeMonthButton>
-            {type === 'expenses' ? (
-              <ReportTitle>Expenses</ReportTitle>
-            ) : (
-              <ReportTitle>Income</ReportTitle>
-            )}
-            <ArrowСhangeMonthButton type="button" onClick={onHandleChangeType}>
-              <RightArrowIcon />
-            </ArrowСhangeMonthButton>
-          </TransactionWrapper>
-          <ReportList>
-            {!getTransactionByType(type) ||
-            getTransactionByType(type).length === 0 ? (
-              <li>
-                <Notificate>
-                  The report will be available after you enter data on your
-                  income and expenses for the selected period.
-                </Notificate>
-              </li>
-            ) : (
-              filterObjByTypeAndCategory().map((array, index) => {
-                const id = nanoid();
-                const style = {
-                  fill:
-                    hoveredIndex === index
-                      ? '#ff751d'
-                      : defaultIndex === index
-                      ? '#ff751d'
-                      : '#071f41',
-                };
-                return (
-                  <ReportCard key={id}>
-                    <p>{`${array.sum.toLocaleString('ru')}.00`}</p>
-                    <IconSvg
+    <Container>
+      <ReportWrapper>
+        <TransactionWrapper>
+          <ArrowСhangeMonth viewBox="0 0 7 12" onClick={onHandleChangeType}>
+            <path d="M6 1L2 6L6 11" stroke="#FF751D" />
+          </ArrowСhangeMonth>
+          {type === 'expenses' ? (
+            <ReportTitle>Expenses</ReportTitle>
+          ) : (
+            <ReportTitle>Income</ReportTitle>
+          )}
+          <ArrowСhangeMonth viewBox="0 0 7 12" onClick={onHandleChangeType}>
+            <path d="M1 1L5 6L1 11" stroke="#FF751D" width="4" height="10" />
+          </ArrowСhangeMonth>
+        </TransactionWrapper>
+        <ReportList>
+          {!getTransactionByType(type) ? (
+            <p>
+              Отчет будет доступен после того как вы внесете данные о своих
+              доходах и расходах за выбранный период.
+            </p>
+          ) : (
+            filterObjByTypeAndCategory().map(array => {
+              const id = nanoid();
+              return (
+                <ReportCard key={id}>
+                  <p>{`${array.sum.toLocaleString('ru')}.00`}</p>
+                  <IconSvg title={array.category} onClick={getCategory}>
+                    <use
+                      xlinkHref={`${sprite}#${array.category}`}
                       title={array.category}
-                      onMouseEnter={() => handleHover(index)}
-                      onMouseLeave={handleLeave}
-                      onClick={getCategory}
-                      style={style}
-                    >
-                      <use
-                        xlinkHref={`${sprite}#${array.category}`}
-                        title={array.category}
-                        onClick={() => setCategory(category)}
-                      />
-                    </IconSvg>
-                    <ReportCardTitle>{array.category}</ReportCardTitle>
-                  </ReportCard>
-                );
-              })
-            )}
-          </ReportList>
-        </ReportWrapper>
-      </Container>
-      <ReportCharts data={typeDataForCarts} category={category} />
-    </>
+                    />
+                  </IconSvg>
+                  <ReportCardTitle>{array.category}</ReportCardTitle>
+                </ReportCard>
+              );
+            })
+            // categories.map(event => {
+            //   let sum = findTotalSumByCategory(type, event.label);
+            //   if (sum === 0) {
+            //     return null;
+            //   }
+
+            //   return (
+            //     <ReportCard key={event.id}>
+            //       <p>{`${sum.toLocaleString('ru')}.00`}</p>
+            //       <IconSvg title={event.label} onClick={getCategory}>
+            //         <use
+            //           xlinkHref={`${sprite}#${event.label}`}
+            //           title={event.label}
+            //         />
+            //       </IconSvg>
+            //       <ReportCardTitle>{event.label}</ReportCardTitle>
+            //     </ReportCard>
+            //   );
+            // })
+          )}
+        </ReportList>
+      </ReportWrapper>
+    </Container>
   );
 };

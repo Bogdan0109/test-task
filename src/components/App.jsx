@@ -1,6 +1,6 @@
 import { useEffect, lazy } from 'react';
 import { useDispatch } from 'react-redux';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,13 +15,10 @@ import { Loader } from './Loader/Loader';
 const RegisterPage = lazy(() => import('../pages/Register'));
 const LoginPage = lazy(() => import('../pages/Login'));
 const HomePage = lazy(() => import('../pages/Home'));
-// const ExpensesForm = lazy(() =>
-//   import('../components/ExpensesForm/ExpensesForm')
-// );
-// const IncomeForm = lazy(() => import('../components/IncomeForm/IncomeForm'));
-const TransactionsForm = lazy(() =>
-  import('../components/TransactionsForm/TransactionsForm')
+const ExpensesForm = lazy(() =>
+  import('../components/ExpensesForm/ExpensesForm')
 );
+const IncomeForm = lazy(() => import('../components/IncomeForm/IncomeForm'));
 const ReportPage = lazy(() => import('../pages/Report'));
 const ExpensesReportForm = lazy(() =>
   import('../components/ExpensesReportForm/ExpensesReportForm')
@@ -50,18 +47,29 @@ export const App = () => {
       ) : (
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route path="/" element={<Navigate to="/login" />} />
+            <Route
+              path="/"
+              element={
+                <RestrictedRoute
+                  redirectTo="/home"
+                  component={<LoginPage />}
+                />
+              }
+            />
             <Route
               path="/login"
               element={
-                <RestrictedRoute redirectTo="/home" component={<LoginPage />} />
+                <RestrictedRoute
+                  redirectTo="/home"
+                  component={<LoginPage />}
+                />
               }
             />
             <Route
               path="/register"
               element={
                 <RestrictedRoute
-                  redirectTo="/home"
+                  redirectTo="/login"
                   component={<RegisterPage />}
                 />
               }
@@ -73,11 +81,10 @@ export const App = () => {
               }
             >
               <Route
-                index
-                element={
+                index element={
                   <PrivateRoute
                     redirectTo="/login"
-                    component={<TransactionsForm />}
+                    component={<ExpensesForm />}
                   />
                 }
               />
@@ -86,7 +93,7 @@ export const App = () => {
                 element={
                   <PrivateRoute
                     redirectTo="/login"
-                    component={<TransactionsForm />}
+                    component={<IncomeForm />}
                   />
                 }
               />
@@ -98,8 +105,7 @@ export const App = () => {
               }
             >
               <Route
-                index
-                element={
+                index element={
                   <PrivateRoute
                     redirectTo="/login"
                     component={<ExpensesReportForm />}
@@ -115,17 +121,14 @@ export const App = () => {
                   />
                 }
               />
-            </Route>
-            {/* //! Маршрут АВТАР */}
-            <Route
-              path="/avatar"
-              element={
-                <PrivateRoute
-                  redirectTo="/login"
-                  component={<UploadAvatarPage />}
-                />
-              }
-            />
+              </Route>
+              {/* //! Маршрут АВТАР */}
+              <Route
+                  path="/avatar"
+                  element={
+                      <PrivateRoute redirectTo="/login" component={<UploadAvatarPage />} />
+                  }
+              />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

@@ -1,4 +1,4 @@
-import { Formik, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 import {
   Button,
   ButtonGoogl,
@@ -10,18 +10,18 @@ import {
   LoginButton,
   Span,
   Block,
-  SpanEmailPassword,
-  Forma,
 } from './LoginForm.styled';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { ReactComponent as GoogleSvg } from 'images/google.svg';
 
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase';
 
 import { logIn } from 'redux/auth/authOperations';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+
 const schema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Enter your email'),
   password: Yup.string().min(8).max(20).required('Enter your password'),
@@ -35,29 +35,18 @@ const FormError = ({ name }) => {
   );
 };
 
-// console.log('LoginForm ---> start'); //!
+console.log('LoginForm ---> start'); //!
 
 export const LoginForm = () => {
+  const navigate = useNavigate(); ///для возможности переходить по ссылке при нажатии на кнопку типа баттон
+  const handleClick = () => {
+    navigate('/register'); //// у цьому місці треба прописати шлях до бекенду.нижче розшифрувала
+  };
+  ///('   ')---'доменне ім'я серверу/шлях до ресурсу на сервері де відбувається аутентифікація/додатковий шлях де аутентифікація відбувається через google'
   const dispatch = useDispatch();
-  const urlParams = new URLSearchParams(window.location.search);
-  const email = urlParams.get('email');
-  const password = urlParams.get('password');
-  useEffect(() => {
-    // console.log('LoginForm ---> value:', { email, password });
-    if (email) {
-      dispatch(logIn({ email, password }));
-    }
-  }, [dispatch, email, password]);
 
-<<<<<<< Updated upstream
-  const handleSubmit = (value, { resetForm }) => {
-    // console.log('LoginForm ---> handleSubmit'); //!
-    // console.log('LoginForm ---> value:', value); //!
-    dispatch(logIn(value));
-
-=======
   const handleSubmit = ({ email, password }, { resetForm }) => {
-    const auth = getAuth();
+    // const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         dispatch(
@@ -69,15 +58,15 @@ export const LoginForm = () => {
     // console.log('LoginForm ---> handleSubmit'); //!
     // console.log('LoginForm ---> value:', email, password); //!
     // dispatch(logIn(value));
->>>>>>> Stashed changes
     resetForm();
   };
 
-  // console.log('LoginForm ---> render'); //!
+  console.log('LoginForm ---> render'); //!
   return (
     <Container>
       <P>You can log in with your Google Account:</P>
-      <ButtonGoogl href="https://easy-start-wallet-back.onrender.com/api/users/google/">
+
+      <ButtonGoogl type="button" onClick={handleClick}>
         <GoogleSvg />
       </ButtonGoogl>
 
@@ -88,10 +77,9 @@ export const LoginForm = () => {
         onSubmit={handleSubmit}
       >
         {({ errors, touched }) => (
-          <Forma autoComplete="off">
+          <Form autoComplete="off">
             <label htmlFor="login" style={{ position: 'relative' }}>
-              {errors.email && touched.email ? <Span>*</Span> : null}{' '}
-              <SpanEmailPassword>Email:</SpanEmailPassword>
+              {errors.email && touched.email ? <Span>*</Span> : null} Email:
               <Block>
                 <Input type="email" name="email" placeholder="Email address" />
                 <FormError name="email" component="div" />
@@ -101,7 +89,7 @@ export const LoginForm = () => {
             <Block>
               <label htmlFor="password">
                 {errors.password && touched.password ? <Span>*</Span> : null}{' '}
-                <SpanEmailPassword>Password:</SpanEmailPassword>
+                Password:
                 <Input
                   type="password"
                   name="password"
@@ -119,7 +107,7 @@ export const LoginForm = () => {
                 <Button type="button">REGISTRATION</Button>
               </Link>
             </Div>
-          </Forma>
+          </Form>
         )}
       </Formik>
     </Container>
