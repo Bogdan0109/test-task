@@ -27,11 +27,16 @@ import { Table } from 'components/Table/Table';
 import { TableStyle } from '../Table/Table.styled';
 import { Summary } from 'components/Summary/Sumarry';
 import { useDispatch, useSelector } from 'react-redux';
+<<<<<<< Updated upstream
 import { getAllTransactions } from 'redux/transaction/transactionOperations';
 import {
   useEffect,
   // useState
 } from 'react';
+=======
+import { getAllTransactions } from '../../redux/transaction/transactionOperations';
+import { useEffect } from 'react';
+>>>>>>> Stashed changes
 import {
   selectAllTransactions,
   selectLoadingTransactions,

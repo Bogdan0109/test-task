@@ -17,6 +17,8 @@ import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { ReactComponent as GoogleSvg } from 'images/google.svg';
 
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+
 import { logIn } from 'redux/auth/authOperations';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -47,11 +49,27 @@ export const LoginForm = () => {
     }
   }, [dispatch, email, password]);
 
+<<<<<<< Updated upstream
   const handleSubmit = (value, { resetForm }) => {
     // console.log('LoginForm ---> handleSubmit'); //!
     // console.log('LoginForm ---> value:', value); //!
     dispatch(logIn(value));
 
+=======
+  const handleSubmit = ({ email, password }, { resetForm }) => {
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then(({ user }) => {
+        dispatch(
+          logIn({ email: user.email, id: user.uid, token: user.accessToken })
+        );
+      })
+      .catch(console.error);
+
+    // console.log('LoginForm ---> handleSubmit'); //!
+    // console.log('LoginForm ---> value:', email, password); //!
+    // dispatch(logIn(value));
+>>>>>>> Stashed changes
     resetForm();
   };
 

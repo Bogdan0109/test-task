@@ -20,7 +20,13 @@ import { ReactComponent as GoogleSvg } from 'images/google.svg';
 
 import { useDispatch } from 'react-redux';
 
+<<<<<<< Updated upstream
 import { logIn, register } from 'redux/auth/authOperations';
+=======
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+
+import { register } from 'redux/auth/authOperations';
+>>>>>>> Stashed changes
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -28,6 +34,7 @@ const schema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Enter your email'),
   password: Yup.string().min(8).max(20).required('Enter your password'),
 });
+
 const FormError = ({ name }) => {
   return (
     <ErrorMessage
@@ -41,6 +48,7 @@ const FormError = ({ name }) => {
 
 export const RegisterForm = () => {
   const dispatch = useDispatch();
+<<<<<<< Updated upstream
   const urlParams = new URLSearchParams(window.location.search);
   const email = urlParams.get('email');
   const password = urlParams.get('password');
@@ -57,6 +65,29 @@ export const RegisterForm = () => {
   };
 
   // console.log('RegisterForm ---> render'); //!
+=======
+  // const [errorSymbol, setErrorSymbol] = useState('*');
+
+  const handleSubmit = ({ email, password }, { resetForm }) => {
+    navigate('/register'); //// у цьому місці треба прописати шлях до бекенду.нижче розшифрувала
+    ///('   ')---'доменне ім'я серверу/шлях до ресурсу на сервері де відбувається аутентифікація/додатковий шлях де аутентифікація відбувається через google'
+
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(({ user }) => {
+        dispatch(
+          register({ email: user.email, id: user.uid, token: user.accessToken })
+        );
+      })
+      .catch(console.error);
+
+    console.log('RegisterForm ---> handleSubmit'); //!
+    // console.log('RegisterForm ---> value:', value); //!
+    // dispatch(register(value));
+    resetForm();
+  };
+
+>>>>>>> Stashed changes
   return (
     <Container>
       <P>You can log in with your Google Account:</P>

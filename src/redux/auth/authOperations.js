@@ -26,6 +26,7 @@ const clearAuthHeader = () => {
  */
 //! Создать нового пользователя
 export const register = createAsyncThunk(
+<<<<<<< Updated upstream
   'auth/signup',
   async (credentials, thunkAPI) => {
     const { email } = credentials;
@@ -39,12 +40,25 @@ export const register = createAsyncThunk(
     } catch (error) {
       console.log(error); //!
 
+=======
+  'auth/register',
+  async (credentials, thunkAPI) => {
+    const { email } = credentials;
+    try {
+      return credentials;
+    } catch (error) {
+      console.log(error); //!
+>>>>>>> Stashed changes
       if (error.message === 'Request failed with status code 409') {
         toast.error(`Email ${email} in use`, {
           position: 'top-center',
           autoClose: 2000,
         });
+<<<<<<< Updated upstream
         // console.log(`Email ${email} уже используется`); //!
+=======
+        console.log(`Email ${email} уже используется`); //!
+>>>>>>> Stashed changes
         return thunkAPI.rejectWithValue(error.message);
       }
       if (error.message === 'Request failed with status code 400') {
@@ -52,7 +66,11 @@ export const register = createAsyncThunk(
           position: 'top-center',
           autoClose: 2000,
         });
+<<<<<<< Updated upstream
         console.log(`User creation error`); //!
+=======
+        console.log(`Ошибка создания пользователя`); //!
+>>>>>>> Stashed changes
         return thunkAPI.rejectWithValue(error.message);
       }
       toast.error(error.message, { position: 'top-center', autoClose: 2000 });
@@ -73,12 +91,16 @@ export const logIn = createAsyncThunk(
   'auth/login',
   async (credentials, thunkAPI) => {
     try {
+<<<<<<< Updated upstream
       const res = await axios.post('/users/login', credentials);
       // console.log('res.data.token:', res.data.token); //!
       setAuthHeader(res.data.token);
       // console.log('auth/login --> res.data:', res.data); //!
       // console.log('auth/login --> res.data.user:', res.data.user); //!
       return res.data;
+=======
+      return credentials;
+>>>>>>> Stashed changes
     } catch (error) {
       console.log(error); //!
 
@@ -87,7 +109,11 @@ export const logIn = createAsyncThunk(
           position: 'top-center',
           autoClose: 2000,
         });
+<<<<<<< Updated upstream
         // console.log('Ошибка входа. Введите еmail и пароль...'); //!
+=======
+        console.log('Ошибка входа. Введите еmail и пароль...'); //!
+>>>>>>> Stashed changes
         return thunkAPI.rejectWithValue(error.message);
       }
       if (error.message === 'Request failed with status code 401') {
@@ -95,7 +121,11 @@ export const logIn = createAsyncThunk(
           position: 'top-center',
           autoClose: 2000,
         });
+<<<<<<< Updated upstream
         // console.log('Email или пароль неверны. Попробуйте снова...'); //!
+=======
+        console.log('Email или пароль неверны. Попробуйте снова...'); //!
+>>>>>>> Stashed changes
         return thunkAPI.rejectWithValue(error.message);
       }
       toast.error(error.message, { position: 'top-center', autoClose: 2000 });
@@ -115,18 +145,30 @@ export const logIn = createAsyncThunk(
 export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
     // await axios.post('/users/logout'); //??
+<<<<<<< Updated upstream
     await axios.get('/users/logout');
     // const res = await axios.get('/users/logout');
     clearAuthHeader();
     // console.log('auth/logout --> res.data.status:', res.data.status); //!
     // console.log('auth/logout --> res.data.user:', res.data.user); //!
     // console.log('auth/logout --> res.data.user.token:', res.data.user.token); //!
+=======
+    const res = await axios.get('/users/logout');
+    clearAuthHeader();
+    console.log('auth/logout --> res.data.status:', res.data.status); //!
+    console.log('auth/logout --> res.data.user:', res.data.user); //!
+    console.log('auth/logout --> res.data.user.token:', res.data.user.token); //!
+>>>>>>> Stashed changes
   } catch (error) {
     console.log(error); //!
     toast.error(
       `Ошибка запроса: ${
         error.message === 'Request failed with status code 401'
+<<<<<<< Updated upstream
           ? 'Missing header with authorization token'
+=======
+          ? 'Отсутствует заголовок с токеном авторизации'
+>>>>>>> Stashed changes
           : error.message
       }`,
       { position: 'top-center', autoClose: 2000 }
@@ -148,18 +190,27 @@ export const refreshUser = createAsyncThunk(
   'auth/refresh',
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
+<<<<<<< Updated upstream
     // console.log(state);
     const persistedToken = state.auth.token;
     // console.log('persistedToken:', persistedToken); //!
 
     if (persistedToken === null) {
       // console.log('Токена нет, уходим из refreshUser'); //!
+=======
+    const persistedToken = state.auth.token;
+    console.log('persistedToken:', persistedToken); //!
+
+    if (persistedToken === null) {
+      console.log('Токена нет, уходим из refreshUser'); //!
+>>>>>>> Stashed changes
       return thunkAPI.rejectWithValue('Unable to fetch user');
     }
 
     try {
       setAuthHeader(persistedToken);
       const res = await axios.get('/users/current');
+<<<<<<< Updated upstream
       // console.log('auth/refresh --> res.data.user:', res.data.user); //!
       //! Проверка на старый токен
       if (persistedToken !== res.data.user.token) {
@@ -168,6 +219,16 @@ export const refreshUser = createAsyncThunk(
           autoClose: 2000,
         });
         // console.log('Ваш токен уже недействительный. Залогиньтесь снова!!!'); //!
+=======
+      console.log('auth/refresh --> res.data.user:', res.data.user); //!
+      //! Проверка на старый токен
+      if (persistedToken !== res.data.user.token) {
+        toast.error(`Ваш токен уже недействительный. Залогиньтесь снова!!!`, {
+          position: 'top-center',
+          autoClose: 2000,
+        });
+        console.log('Ваш токен уже недействительный. Залогиньтесь снова!!!'); //!
+>>>>>>> Stashed changes
         return thunkAPI.rejectWithValue(
           'Your token is no longer valid. Login again'
         );
@@ -178,14 +239,22 @@ export const refreshUser = createAsyncThunk(
       console.log(error); //!
 
       if (error.message === 'Request failed with status code 401') {
+<<<<<<< Updated upstream
         toast.error(`Missing header with authorization token`, {
+=======
+        toast.error(`Отсутствует заголовок с токеном авторизации`, {
+>>>>>>> Stashed changes
           position: 'top-center',
           autoClose: 2000,
         });
         return thunkAPI.rejectWithValue(error.message);
       }
       if (error.message === 'Request failed with status code 500') {
+<<<<<<< Updated upstream
         toast.error(`Token removed because it was invalid!!!`, {
+=======
+        toast.error(`Токен удален, так как был недействительный!!!`, {
+>>>>>>> Stashed changes
           position: 'top-center',
           autoClose: 2000,
         });
@@ -204,13 +273,22 @@ export const refreshUser = createAsyncThunk(
 export const changeAvatar = createAsyncThunk(
   'auth/changeAvatar',
   async (credentials, thunkAPI) => {
+<<<<<<< Updated upstream
     // console.log('auth/changeAvatar --> credentials:', credentials); //!
+=======
+    console.log('auth/changeAvatar --> credentials:', credentials); //!
+>>>>>>> Stashed changes
     try {
       const { data } = await axios.patch('/users/avatars', credentials, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
+<<<<<<< Updated upstream
       // console.log('auth/changeAvatar --> data:', data); //!
       // console.log('auth/login --> data.avatarURL:', data.avatarURL); //!
+=======
+      console.log('auth/changeAvatar --> data:', data); //!
+      console.log('auth/login --> data.avatarURL:', data.avatarURL); //!
+>>>>>>> Stashed changes
       // console.log("auth/login --> data.avatarURL2:", data.avatarURL2); //!
       // console.log("auth/login --> res.data.user:", res.data.user); //!
       return data.avatarURL;
@@ -239,6 +317,56 @@ export const changeAvatar = createAsyncThunk(
 export const getBalance = createAsyncThunk(
   'auth/getBalance',
   async (_, thunkAPI) => {
+<<<<<<< Updated upstream
+=======
+    try {
+      const { data } = await axios.get('/users/balance');
+      console.log('auth/getBalance == >data.balance:', data.balance); //!
+      return data;
+    } catch (error) {
+      console.log(error); //!
+      toast.error(
+        `Ошибка запроса: ${
+          error.message === 'Request failed with status code 404'
+            ? 'Нет такой коллекции пользователей'
+            : error.message
+        }`,
+        { position: 'top-center', autoClose: 2000 }
+      );
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+//! ИЗМЕНИТЬ баланс пользователя
+export const updateBalance = createAsyncThunk(
+  'auth/changeBalance',
+  async (credentials, thunkAPI) => {
+    console.log('auth/changeBalance --> credentials:', credentials); //!
+    try {
+      const { data } = await axios.patch('/users/balance', credentials);
+      console.log('auth/changeBalance == >data.balance:', data.balance); //!
+      return data.balance;
+    } catch (error) {
+      console.log(error); //!
+      toast.error(
+        `Ошибка запроса: ${
+          error.message === 'Request failed with status code 404'
+            ? 'Нет такой коллекции пользователей'
+            : error.message
+        }`,
+        { position: 'top-center', autoClose: 2000 }
+      );
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+//! ИЗМЕНИТЬ isNotNewUser
+export const changeIsNotNewUser = createAsyncThunk(
+  'auth/changeIsNotNewUser',
+  async (credentials, thunkAPI) => {
+>>>>>>> Stashed changes
     try {
       const { data } = await axios.get('/users/balance');
       // console.log('auth/getBalance == >data.balance:', data.balance); //!

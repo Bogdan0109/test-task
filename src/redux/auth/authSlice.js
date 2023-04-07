@@ -15,10 +15,12 @@ import {
 } from './authOperations';
 
 const initialState = {
-  // user: { name: null, email: null },
-  user: { name: null, email: null, avatarURL: null },
-  balance: 0,
+  email: null,
+  id: null,
   token: null,
+  // user: { name: null, email: null },
+  user: { avatarURL: null },
+  balance: 0,
   isLoggedIn: false,
   isRegistrIn: false, //? for Kapu$ta
   isRefreshing: false,
@@ -41,9 +43,18 @@ const authSlice = createSlice({
       state.error = null;
     },
     [register.fulfilled](state, { payload }) {
+<<<<<<< Updated upstream
       state.user = payload.newUser;
       state.token = payload.token; //? НЕ НАДО для Kapu$ta:
       // state.token = null; //? for Kapu$ta
+=======
+      console.log('payload', payload);
+      // state.user = payload.newUser;
+      state.email = payload.email;
+      state.id = payload.id;
+      state.token = payload.token;
+      // state.token = payload.token; //? НЕ НАДО для Kapu$ta:
+>>>>>>> Stashed changes
       // state.isLoggedIn = true; //? НЕ НАДО для Kapu$ta:
       state.isLoggedIn = true; //? for Kapu$ta
       state.isRegistrIn = true; //? for Kapu$ta
@@ -73,6 +84,8 @@ const authSlice = createSlice({
     [logIn.fulfilled](state, { payload }) {
       // console.log("logIn.fulfilled --> payload.user:", payload.user); //!
       state.user = payload.user;
+      state.email = payload.email;
+      state.id = payload.id;
       state.token = payload.token;
       state.isLoggedIn = true;
       state.isRegistrIn = true; //? for Kapu$ta
@@ -97,7 +110,9 @@ const authSlice = createSlice({
     },
     [logOut.fulfilled](state) {
       // state.user = { name: null, email: null };
-      state.user = { name: null, email: null, avatarURL: null };
+      state.user = { avatarURL: null };
+      state.email = null;
+      state.id = null;
       state.token = null;
       state.isLoggedIn = false;
       state.isRegistrIn = false; //? for Kapu$ta
