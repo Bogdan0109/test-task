@@ -72,7 +72,7 @@ const transactionsSlice = createSlice({
       // state.transaction.description = payload.description
       // state.transaction.category = payload.category
       // state.transaction.sum = payload.sum
-      state.allTransactions.push(payload.transaction);
+      state.allTransactions.push(payload);
       state.isLoading = false;
       state.error = null;
     },

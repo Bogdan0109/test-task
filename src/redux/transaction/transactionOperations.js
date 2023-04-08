@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
 import { toast } from 'react-toastify';
+
+import { db } from '../../firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 //! axios defaults baseURL (возможно, это не надо, т.к. уже есть в authOperations.js)
 // axios.defaults.baseURL = 'http://localhost:3033/api';
@@ -17,8 +19,16 @@ export const getAllTransactions = createAsyncThunk(
         data,
       } = await axios.get('/transactions');
 
+      const querySnapshot = await getDocs(collection(db, 'users'));
+      querySnapshot.forEach(doc => {
+        console.log(`${doc.id} => ${doc.data()}`);
+      });
+      console.log(
+        '🚀 ~ file: transactionOperations.js:26 ~ querySnapshot:',
+        querySnapshot
+      );
       // const { transactions } = data; //??  //???
-      console.log('contacts/getAllTransactions == >data.transactions:', data);
+      // console.log('contacts/getAllTransactions == >data.transactions:', data);
       return data.transactions;
     } catch (error) {
       console.log(error); //!
@@ -41,13 +51,22 @@ export const addTransaction = createAsyncThunk(
   async (credentials, thunkAPI) => {
     console.log('transactions/addTransaction ==> credentials:', credentials); //!
     try {
-      const { data } = await axios.post('/transactions', credentials);
-      console.log('transactions/addTransaction ==> data:', data); //!
+      // const {
+      //   // data: { transactions },
+      //   data,
+      // } = await axios.get('/transactions');
+
+      const querySnapshot = await getDocs(collection(db, 'users'));
       console.log(
-        'transactions/addTransaction ==> data.transaction:',
-        data.transaction
-      ); //!
-      return data;
+        '🚀 ~ file: transactionOperations.js:56 ~ querySnapshot:',
+        querySnapshot
+      );
+      const docs = querySnapshot.docs.map(doc => {
+        return doc.data();
+      });
+      console.log('🚀 ~ file: transactionOperations.js:65 ~ docs:', docs);
+
+      return docs;
     } catch (error) {
       console.log(error); //!
       toast.error(

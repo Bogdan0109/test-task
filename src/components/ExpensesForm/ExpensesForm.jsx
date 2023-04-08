@@ -26,6 +26,9 @@ import {
   ErrorMessageWrapper,
 } from './ExpensesForm.styled';
 
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+
 const options = [
   { value: 'Transport', label: 'Transport' },
   { value: 'Products', label: 'Products' },
@@ -81,7 +84,18 @@ const ExpensesForm = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={schema}
-        onSubmit={(values, { resetForm }) => {
+        onSubmit={async (values, { resetForm }) => {
+          try {
+            const docRef = await addDoc(collection(db, 'users'), {
+              ...values,
+              transactionsType: 'expenses',
+              date,
+            });
+            console.log('Document written with ID: ', docRef.id);
+          } catch (e) {
+            console.error('Error adding document: ', e);
+          }
+
           dispatch(
             addTransaction({
               ...values,

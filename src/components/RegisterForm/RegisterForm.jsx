@@ -19,8 +19,14 @@ import { ReactComponent as GoogleSvg } from 'images/google.svg';
 
 import { useDispatch } from 'react-redux';
 
-import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+} from 'firebase/auth';
 import { auth, provider } from '../../firebase';
+// import { firebase } from '../../firebase';
+import { firebase } from 'firebase/app';
 
 import { register } from 'redux/auth/authOperations';
 import { Link } from 'react-router-dom';
@@ -44,18 +50,37 @@ console.log('RegisterForm ---> start'); //!
 
 export const RegisterForm = () => {
   const navigate = useNavigate(); ///для возможности переходить по ссылке при нажатии на кнопку типа баттон
+
   const handleClick = () => {
-    console.log('isdhfuiwfiewyr9y293r9ewr9ew', 'isdhfuiwfiewyr9y293r9ewr9ew');
+    // console.log('isdhfuiwfiewyr9y293r9ewr9ew', 'isdhfuiwfiewyr9y293r9ewr9ew');
     navigate('/register'); //// у цьому місці треба прописати шлях до бекенду.нижче розшифрувала
-    signInWithPopup(auth, provider).then(({ user }) => {
-      console.log(
-        '🚀 ~ file: RegisterForm.jsx:51 ~ signInWithPopup ~ user:',
-        user
-      );
-      dispatch(
-        register({ email: user.email, id: user.uid, token: user.accessToken })
-      );
-    });
+    signInWithPopup(auth, provider)
+      .then(({ user }) => {
+        console.log(
+          '🚀 ~ file: RegisterForm.jsx:51 ~ signInWithPopup ~ user:',
+          user.email
+        );
+        const currentUser = auth.currentUser;
+        console.log(
+          '🚀 ~ file: RegisterForm.jsx:64 ~ .then ~ currentUser:',
+          currentUser.email
+        );
+        // console.log('🚀 ~ file: RegisterForm.jsx:30 ~ firebase:', firebase);
+        // firebase.auth().getUserByEmail(user.email);
+        // .then(function (userRecord) {
+        //   // Користувач із заданою електронною адресою знайдений
+        //   console.log('User record found:', userRecord.toJSON());
+        // })
+        // .catch(function (error) {
+        //   // Користувач із заданою електронною адресою не знайдений
+        //   console.log('Error fetching user data:', error);
+        // });
+
+        dispatch(
+          register({ email: user.email, id: user.uid, token: user.accessToken })
+        );
+      })
+      .catch(console.error);
   };
 
   const dispatch = useDispatch();

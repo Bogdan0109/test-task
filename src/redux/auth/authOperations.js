@@ -4,19 +4,19 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 
 //! axios defaults baseURL
-axios.defaults.baseURL = 'http://localhost:3033/api';
+// axios.defaults.baseURL = 'http://localhost:3033/api';
 // axios.defaults.baseURL = 'https://contact-book-backend52.onrender.com/api';
 
-//! Utility to add JWT
-const setAuthHeader = token => {
-  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-  // axios.defaults.headers.common.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYWY0M2MwZTU4YTUxZTk1YTJjOWZmYiIsImVtYWlsIjoiNzc3QHVrci51YSIsImlhdCI6MTY3MjczNjU5OH0.PRqM0mjhkFR-oZ9rg_rEVPd5dIYSIxIt5AroRBeI9sw`;
-};
+// //! Utility to add JWT
+// const setAuthHeader = token => {
+//   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+//   // axios.defaults.headers.common.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYWY0M2MwZTU4YTUxZTk1YTJjOWZmYiIsImVtYWlsIjoiNzc3QHVrci51YSIsImlhdCI6MTY3MjczNjU5OH0.PRqM0mjhkFR-oZ9rg_rEVPd5dIYSIxIt5AroRBeI9sw`;
+// };
 
-//! Utility to remove JWT
-const clearAuthHeader = () => {
-  axios.defaults.headers.common.Authorization = '';
-};
+// //! Utility to remove JWT
+// const clearAuthHeader = () => {
+//   axios.defaults.headers.common.Authorization = '';
+// };
 
 /*
     todo POST @ /users/signup --> OLD
@@ -145,7 +145,7 @@ export const refreshUser = createAsyncThunk(
     }
 
     try {
-      setAuthHeader(persistedToken);
+      // setAuthHeader(persistedToken);
       const res = await axios.get('/users/current');
       console.log('auth/refresh --> res.data.user:', res.data.user); //!
       //! Проверка на старый токен
@@ -177,7 +177,7 @@ export const refreshUser = createAsyncThunk(
           autoClose: 2000,
         });
         //! обнулить token в authSlice.js --> refreshUser.rejected
-        clearAuthHeader();
+        // clearAuthHeader();
         return thunkAPI.rejectWithValue(error.message);
       }
       // toast.error(`Ошибка запроса: ${error.message === "Request failed with status code 401" ? "Отсутствует заголовок с токеном авторизации" : error.message}`, { position: "top-center", autoClose: 2000 });
@@ -187,110 +187,110 @@ export const refreshUser = createAsyncThunk(
   }
 );
 
-//! Изменить Аватар пользователя
-export const changeAvatar = createAsyncThunk(
-  'auth/changeAvatar',
-  async (credentials, thunkAPI) => {
-    console.log('auth/changeAvatar --> credentials:', credentials); //!
-    try {
-      const { data } = await axios.patch('/users/avatars', credentials, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      console.log('auth/changeAvatar --> data:', data); //!
-      console.log('auth/login --> data.avatarURL:', data.avatarURL); //!
-      // console.log("auth/login --> data.avatarURL2:", data.avatarURL2); //!
-      // console.log("auth/login --> res.data.user:", res.data.user); //!
-      return data.avatarURL;
-    } catch (error) {
-      console.log(error); //!
+// //! Изменить Аватар пользователя
+// export const changeAvatar = createAsyncThunk(
+//   'auth/changeAvatar',
+//   async (credentials, thunkAPI) => {
+//     console.log('auth/changeAvatar --> credentials:', credentials); //!
+//     try {
+//       const { data } = await axios.patch('/users/avatars', credentials, {
+//         headers: { 'Content-Type': 'multipart/form-data' },
+//       });
+//       console.log('auth/changeAvatar --> data:', data); //!
+//       console.log('auth/login --> data.avatarURL:', data.avatarURL); //!
+//       // console.log("auth/login --> data.avatarURL2:", data.avatarURL2); //!
+//       // console.log("auth/login --> res.data.user:", res.data.user); //!
+//       return data.avatarURL;
+//     } catch (error) {
+//       console.log(error); //!
 
-      // if (error.message === "Request failed with status code 400") {
-      //     toast.error(`Login failed. Enter email and password`, { position: "top-center", autoClose: 2000 });
-      //     console.log('Ошибка входа. Введите еmail и пароль...'); //!
-      //     return thunkAPI.rejectWithValue(error.message);
-      // };
-      // if (error.message === "Request failed with status code 401") {
-      //     toast.error(`Login failed. Email or password is incorrect`, { position: "top-center", autoClose: 2000 });
-      //     console.log('Email или пароль неверны. Попробуйте снова...'); //!
-      //     return thunkAPI.rejectWithValue(error.message);
-      // };
-      toast.error(error.message, { position: 'top-center', autoClose: 2000 });
-      console.log(error.message); //!
-      // toast.error(`Ошибка запроса: ${error.message === "Request failed with status code 400" ? "Ошибка входа" : error.message}`, { position: "top-center", autoClose: 2000 });
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+//       // if (error.message === "Request failed with status code 400") {
+//       //     toast.error(`Login failed. Enter email and password`, { position: "top-center", autoClose: 2000 });
+//       //     console.log('Ошибка входа. Введите еmail и пароль...'); //!
+//       //     return thunkAPI.rejectWithValue(error.message);
+//       // };
+//       // if (error.message === "Request failed with status code 401") {
+//       //     toast.error(`Login failed. Email or password is incorrect`, { position: "top-center", autoClose: 2000 });
+//       //     console.log('Email или пароль неверны. Попробуйте снова...'); //!
+//       //     return thunkAPI.rejectWithValue(error.message);
+//       // };
+//       toast.error(error.message, { position: 'top-center', autoClose: 2000 });
+//       console.log(error.message); //!
+//       // toast.error(`Ошибка запроса: ${error.message === "Request failed with status code 400" ? "Ошибка входа" : error.message}`, { position: "top-center", autoClose: 2000 });
+//       return thunkAPI.rejectWithValue(error.message);
+//     }
+//   }
+// );
 
-//! ПОЛУЧИТЬ баланс пользователя
-export const getBalance = createAsyncThunk(
-  'auth/getBalance',
-  async (_, thunkAPI) => {
-    try {
-      const { data } = await axios.get('/users/balance');
-      console.log('auth/getBalance == >data.balance:', data.balance); //!
-      return data;
-    } catch (error) {
-      console.log(error); //!
-      toast.error(
-        `Ошибка запроса: ${
-          error.message === 'Request failed with status code 404'
-            ? 'Нет такой коллекции пользователей'
-            : error.message
-        }`,
-        { position: 'top-center', autoClose: 2000 }
-      );
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+// //! ПОЛУЧИТЬ баланс пользователя
+// export const getBalance = createAsyncThunk(
+//   'auth/getBalance',
+//   async (_, thunkAPI) => {
+//     try {
+//       const { data } = await axios.get('/users/balance');
+//       console.log('auth/getBalance == >data.balance:', data.balance); //!
+//       return data;
+//     } catch (error) {
+//       console.log(error); //!
+//       toast.error(
+//         `Ошибка запроса: ${
+//           error.message === 'Request failed with status code 404'
+//             ? 'Нет такой коллекции пользователей'
+//             : error.message
+//         }`,
+//         { position: 'top-center', autoClose: 2000 }
+//       );
+//       return thunkAPI.rejectWithValue(error.message);
+//     }
+//   }
+// );
 
-//! ИЗМЕНИТЬ баланс пользователя
-export const updateBalance = createAsyncThunk(
-  'auth/changeBalance',
-  async (credentials, thunkAPI) => {
-    console.log('auth/changeBalance --> credentials:', credentials); //!
-    try {
-      const { data } = await axios.patch('/users/balance', credentials);
-      console.log('auth/changeBalance == >data.balance:', data.balance); //!
-      return data.balance;
-    } catch (error) {
-      console.log(error); //!
-      toast.error(
-        `Ошибка запроса: ${
-          error.message === 'Request failed with status code 404'
-            ? 'Нет такой коллекции пользователей'
-            : error.message
-        }`,
-        { position: 'top-center', autoClose: 2000 }
-      );
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+// //! ИЗМЕНИТЬ баланс пользователя
+// export const updateBalance = createAsyncThunk(
+//   'auth/changeBalance',
+//   async (credentials, thunkAPI) => {
+//     console.log('auth/changeBalance --> credentials:', credentials); //!
+//     try {
+//       const { data } = await axios.patch('/users/balance', credentials);
+//       console.log('auth/changeBalance == >data.balance:', data.balance); //!
+//       return data.balance;
+//     } catch (error) {
+//       console.log(error); //!
+//       toast.error(
+//         `Ошибка запроса: ${
+//           error.message === 'Request failed with status code 404'
+//             ? 'Нет такой коллекции пользователей'
+//             : error.message
+//         }`,
+//         { position: 'top-center', autoClose: 2000 }
+//       );
+//       return thunkAPI.rejectWithValue(error.message);
+//     }
+//   }
+// );
 
-//! ИЗМЕНИТЬ isNotNewUser
-export const changeIsNotNewUser = createAsyncThunk(
-  'auth/changeIsNotNewUser',
-  async (credentials, thunkAPI) => {
-    try {
-      const { data } = await axios.patch('/users/isnotnewuser', credentials);
-      console.log(
-        'auth/changeIsNotNewUser == >data.isNotNewUser:',
-        data.isNotNewUser
-      ); //!
-      return data.isNotNewUser;
-    } catch (error) {
-      console.log(error); //!
-      toast.error(
-        `Ошибка запроса: ${
-          error.message === 'Request failed with status code 404'
-            ? 'Нет такой коллекции пользователей'
-            : error.message
-        }`,
-        { position: 'top-center', autoClose: 2000 }
-      );
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+// //! ИЗМЕНИТЬ isNotNewUser
+// export const changeIsNotNewUser = createAsyncThunk(
+//   'auth/changeIsNotNewUser',
+//   async (credentials, thunkAPI) => {
+//     try {
+//       const { data } = await axios.patch('/users/isnotnewuser', credentials);
+//       console.log(
+//         'auth/changeIsNotNewUser == >data.isNotNewUser:',
+//         data.isNotNewUser
+//       ); //!
+//       return data.isNotNewUser;
+//     } catch (error) {
+//       console.log(error); //!
+//       toast.error(
+//         `Ошибка запроса: ${
+//           error.message === 'Request failed with status code 404'
+//             ? 'Нет такой коллекции пользователей'
+//             : error.message
+//         }`,
+//         { position: 'top-center', autoClose: 2000 }
+//       );
+//       return thunkAPI.rejectWithValue(error.message);
+//     }
+//   }
+// );

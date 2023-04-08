@@ -50,26 +50,20 @@ export const App = () => {
             <Route
               path="/"
               element={
-                <RestrictedRoute
-                  redirectTo="/home"
-                  component={<LoginPage />}
-                />
+                <RestrictedRoute redirectTo="/home" component={<LoginPage />} />
               }
             />
             <Route
               path="/login"
               element={
-                <RestrictedRoute
-                  redirectTo="/home"
-                  component={<LoginPage />}
-                />
+                <RestrictedRoute redirectTo="/home" component={<LoginPage />} />
               }
             />
             <Route
               path="/register"
               element={
                 <RestrictedRoute
-                  redirectTo="/login"
+                  redirectTo="/home"
                   component={<RegisterPage />}
                 />
               }
@@ -81,7 +75,8 @@ export const App = () => {
               }
             >
               <Route
-                index element={
+                index
+                element={
                   <PrivateRoute
                     redirectTo="/login"
                     component={<ExpensesForm />}
@@ -105,7 +100,8 @@ export const App = () => {
               }
             >
               <Route
-                index element={
+                index
+                element={
                   <PrivateRoute
                     redirectTo="/login"
                     component={<ExpensesReportForm />}
@@ -121,14 +117,17 @@ export const App = () => {
                   />
                 }
               />
-              </Route>
-              {/* //! Маршрут АВТАР */}
-              <Route
-                  path="/avatar"
-                  element={
-                      <PrivateRoute redirectTo="/login" component={<UploadAvatarPage />} />
-                  }
-              />
+            </Route>
+            {/* //! Маршрут АВТАР */}
+            <Route
+              path="/avatar"
+              element={
+                <PrivateRoute
+                  redirectTo="/login"
+                  component={<UploadAvatarPage />}
+                />
+              }
+            />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

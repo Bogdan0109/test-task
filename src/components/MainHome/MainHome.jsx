@@ -3,7 +3,7 @@ import useScreenResizing from '../../hooks/useScreenResizing';
 import { MainWrapper } from '../MainWrapper/MainWrapper';
 import { BottomBtnWrapper } from '../BottomBtnWrapper/BottomBtnWrapper';
 import { TopBtnList } from '../TopBtnList/TopBtnList';
-import { BalanceWrapper } from '../BalanceWrapper/BalanceWrapper';
+// import { BalanceWrapper } from '../BalanceWrapper/BalanceWrapper';
 import { BackspaceBtn } from '../BackspaceBtn/BackspaceBtn';
 import { useState } from 'react';
 import { DataBox } from '../DataBox/DataBox';
@@ -23,7 +23,6 @@ import {
   LoaderWrapper,
 } from './MainHome.styled';
 import { OperationList } from 'components/OperationList/OperationList';
-import { Summary } from 'components/Summary/Sumarry';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllTransactions } from '../../redux/transaction/transactionOperations';
 import { useEffect } from 'react';
@@ -72,7 +71,7 @@ export const MainHome = ({ children }) => {
               <BackspaceBtn handleClick={handleClick} title="to transactions" />
             </BackspaceWrapper>
             <ContentBalanceContainer>
-              <BalanceWrapper />
+              {/* <BalanceWrapper /> */}
               <DataBox />
             </ContentBalanceContainer>
             {isLoading ? (
@@ -106,7 +105,7 @@ export const MainHome = ({ children }) => {
         {viewPort.width > 767 && (
           <>
             <ContentBalanceContainer>
-              <BalanceWrapper />
+              {/* <BalanceWrapper /> */}
             </ContentBalanceContainer>
             {/* 767-1279 */}
             <BottomContentWrapper>
@@ -121,7 +120,6 @@ export const MainHome = ({ children }) => {
                     sortedTransactions={sortedTransactions}
                   />
                 </FilterWrapper>
-                <Summary sortedTransactions={sortedTransactions} />
               </ContentBox>
             </BottomContentWrapper>
             {/* 1280 +*/}
@@ -135,7 +133,6 @@ export const MainHome = ({ children }) => {
                   isLoading={isLoading}
                   sortedTransactions={sortedTransactions}
                 />
-                <Summary sortedTransactions={sortedTransactions} />
               </MainContentWrapper>
             </BigFilterWrapper>
           </>
